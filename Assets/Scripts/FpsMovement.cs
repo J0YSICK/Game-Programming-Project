@@ -49,7 +49,7 @@ public class FpsMovement : MonoBehaviour
         jumpAction.action.performed += Jump;
         sprintAction.action.performed += Sprint;
         sprintAction.action.canceled += Sprint;
-        sprintAction.action.performed += Crouch;
+        crouchAction.action.performed += Crouch;
 
     }
 
@@ -59,11 +59,14 @@ public class FpsMovement : MonoBehaviour
         jumpAction.action.performed -= Jump;    // should b negative
         sprintAction.action.performed -= Sprint;
         sprintAction.action.canceled -= Sprint;
-        sprintAction.action.performed -= Crouch;
+        crouchAction.action.performed -= Crouch;
     }
 
     private void Crouch(InputAction.CallbackContext context){
         if (_isCrouching){
+            if (!CanStandUp()){
+
+            }
             _targetHeight = standingHeight;
         } else {
             _targetHeight = crouchingHeight;
@@ -73,6 +76,15 @@ public class FpsMovement : MonoBehaviour
 
     private void Sprint(InputAction.CallbackContext context){
         _isRunning = context.performed;
+    }
+
+    private bool CanStandUp(){
+        return !Physics.CapsuleCast(
+        transform.position + _characterController.center,
+        transform.position + (Vector3.up * _characterController.height / 2),
+        _characterController.radius,
+        Vector3.up
+        );
     }
 
 
@@ -85,6 +97,15 @@ public class FpsMovement : MonoBehaviour
         HandleGravity();
         HandleMovement();
         HandleCrouchTransition();
+
+        /*if (Input.anyKeyDown){
+            foreach ( KeyCode keyCode in System.Enum.GetValues(typeof(KeyCode)))
+            {
+                if (Input.GetKeyDown(keyCode)){
+                    Debug.Log("Key pressed: " + keyCode);
+                }
+            }
+        }*/
     }
 
     private void Jump (InputAction.CallbackContext context){
@@ -120,6 +141,12 @@ public class FpsMovement : MonoBehaviour
             _characterController.height = _targetHeight;
             return; // Good height
         }
+
+
+        var newHeight = Mathf.Lerp(currentHeight, _targetHeight, crouchTransitionSpeed * Time.deltaTime);
+        _characterController.height = newHeight;
+        _characterController.center = Vector3.up * (newHeight * 0.5f);
+
 
         var cameraTargetPosition = cameraTransform.localPosition;
         cameraTargetPosition.y = _targetHeight - cameraOffset;
