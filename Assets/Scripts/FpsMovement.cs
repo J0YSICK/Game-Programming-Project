@@ -73,6 +73,9 @@ public class FpsMovement : MonoBehaviour
         finalMove.y = _verticalVelocity;
 
 
-        _characterController.Move(finalMove * Time.deltaTime);
+        var collisions = _characterController.Move(finalMove * Time.deltaTime);
+        if ((collisions & CollisionFlags.Above) != 0){
+            _verticalVelocity = initialFallVelocity;
+        }
     }
 }
