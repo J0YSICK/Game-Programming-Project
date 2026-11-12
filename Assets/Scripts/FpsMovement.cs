@@ -19,10 +19,14 @@ public class FpsMovement : MonoBehaviour
     [SerializeField] private Transform cameraTransform;
     [SerializeField] private InputActionReference moveAction;
     [SerializeField] private InputActionReference jumpAction;
+    [SerializeField] private InputActionReference crouchAction;
+    [SerializeField] private InputActionReference sprintAction;
 
     private CharacterController _characterController;
     private Vector2 _moveInput;
     private bool _isGrounded;
+    private bool _isRunning;
+    private bool _isCrouching;
     private float _verticalVelocity;
 
     private void Awake(){
@@ -34,13 +38,29 @@ public class FpsMovement : MonoBehaviour
         moveAction.action.performed += StoreMovementInput;
         moveAction.action.canceled += StoreMovementInput;
         jumpAction.action.performed += Jump;
+        sprintAction.action.performed += Sprint;
+        sprintAction.action.canceled += Sprint;
+        sprintAction.action.performed += Crouch;
+
     }
 
     private void OnDisable(){
         moveAction.action.performed -= StoreMovementInput;
         moveAction.action.canceled -= StoreMovementInput;
         jumpAction.action.performed -= Jump;    // should b negative
+        sprintAction.action.performed -= Sprint;
+        sprintAction.action.canceled -= Sprint;
+        sprintAction.action.performed -= Crouch;
     }
+
+    private void Crouch(InputAction.CallbackContext context){
+        _isCrouching = !_isCrouching;
+    }
+
+    private void Sprint(InputAction.CallbackContext context){
+        _isRunning = context.performed;
+    }
+
 
     private void StoreMovementInput(InputAction.CallbackContext context){
         _moveInput = context.ReadValue<Vector2>();
@@ -68,7 +88,7 @@ public class FpsMovement : MonoBehaviour
 
     private void HandleMovement(){
         var move = cameraTransform.TransformDirection(new Vector3(_moveInput.x, 0, _moveInput.y)).normalized;
-        var currentSpeed = walkSpeed;
+        var currentSpeed = _isCrouching ? crouchSpeed : _isRunning ? runSpeed : walkSpeed;
         var finalMove = move * currentSpeed;
         finalMove.y = _verticalVelocity;
 
