@@ -15,6 +15,13 @@ public class FpsMovement : MonoBehaviour
     // the -2 below prevents weird jumps when going donw the stairs
     [SerializeField] private float initialFallVelocity = -2f;
 
+    [Header("Crouching")]
+    [SerializeField] private float standingHeight = 2f;
+    [SerializeField] private float crouchingHeight = 1f;
+    [SerializeField] private float crouchTransitionSpeed = 10f;
+    [SerializeField] private float cameraOffset = 0.4f;
+
+
     [Header("References")]
     [SerializeField] private Transform cameraTransform;
     [SerializeField] private InputActionReference moveAction;
@@ -28,9 +35,11 @@ public class FpsMovement : MonoBehaviour
     private bool _isRunning;
     private bool _isCrouching;
     private float _verticalVelocity;
+    private float _targetHeight;
 
     private void Awake(){
         _characterController = GetComponent<CharacterController>();
+        _targetHeight = standingHeight;
 
     }
 
@@ -54,6 +63,11 @@ public class FpsMovement : MonoBehaviour
     }
 
     private void Crouch(InputAction.CallbackContext context){
+        if (_isCrouching){
+            _targetHeight = standingHeight;
+        } else {
+            _targetHeight = crouchingHeight;
+        }
         _isCrouching = !_isCrouching;
     }
 
@@ -70,6 +84,7 @@ public class FpsMovement : MonoBehaviour
         _isGrounded = _characterController.isGrounded;
         HandleGravity();
         HandleMovement();
+        HandleCrouchTransition();
     }
 
     private void Jump (InputAction.CallbackContext context){
@@ -97,5 +112,21 @@ public class FpsMovement : MonoBehaviour
         if ((collisions & CollisionFlags.Above) != 0){
             _verticalVelocity = initialFallVelocity;
         }
+    }
+
+    private void HandleCrouchTransition(){
+        var currentHeight = _characterController.height;
+        if (Mathf.Abs(currentHeight - _targetHeight) < 0.01f){
+            _characterController.height = _targetHeight;
+            return; // Good height
+        }
+
+        var cameraTargetPosition = cameraTransform.localPosition;
+        cameraTargetPosition.y = _targetHeight - cameraOffset;
+        cameraTransform.localPosition = Vector3.Lerp(
+            cameraTransform.localPosition,
+            cameraTargetPosition,
+            crouchTransitionSpeed * Time.deltaTime);
+        
     }
 }
