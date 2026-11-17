@@ -12,7 +12,7 @@ public enum ItemType
     Keycard = 3,
 }
 
-public enum DetectionState{ Hidden, Suspiscious, Spotted }
+public enum DetectionState{ Hidden, Suspicious, Spotted }
 
 public class HUDManager : MonoBehaviour
 {
@@ -184,7 +184,7 @@ public class HUDManager : MonoBehaviour
     // Detection eye
     public void SetDetection(DetectionState state){
         detectionEye.enabled = state != DetectionState.Hidden;
-        if(state == DetectionState.Suspiscious){
+        if(state == DetectionState.Suspicious){
             detectionEye.color = suspiciousColor;
         }
         if(state == DetectionState.Spotted){
