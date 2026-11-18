@@ -6221,6 +6221,9 @@ GameObject:
   - component: {fileID: 835352665}
   - component: {fileID: 835352666}
   - component: {fileID: 835352667}
+  - component: {fileID: 835352670}
+  - component: {fileID: 835352669}
+  - component: {fileID: 835352668}
   m_Layer: 0
   m_Name: Nurse
   m_TagString: Untagged
@@ -6286,6 +6289,74 @@ MonoBehaviour:
   player: {fileID: 1511822948}
   detectionRange: 5
   chaseSpeed: 3
+--- !u!114 &835352668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 835352664}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: baa33edf927ca234eb8757e5f20894d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AIAnimationController
+--- !u!95 &835352669
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 835352664}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a3e61ca2e3d335142896922299d27b18, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &835352670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 835352664}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50b9a0430ce469f4f8028d8efe63db74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AIController
+  Waypoints:
+  - {fileID: 1512025889}
+  - {fileID: 1693471733}
+  - {fileID: 1205009110}
+  Player: {fileID: 1511822948}
+  AttackRange: 2
+  PlayerLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  currentState: 0
+  leftHandTransform: {fileID: 0}
+  rightHandTransform: {fileID: 0}
+  viewDistance: 10
+  viewAngle: 90
+  eyeHeight: 1.6
+  obstacleMask:
+    serializedVersion: 2
+    m_Bits: 0
+  playerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  visionPersistence: 0.5
 --- !u!4 &838465844 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: f11bf7a9bb8ca404381a4495268b9a9e, type: 3}
