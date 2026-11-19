@@ -194,18 +194,33 @@ public class HUDManager : MonoBehaviour
 
     // Inventory
     public void SetItemCount(ItemType item, int count){
-        SlotUI slot = slots[(int)item];
-        if (slot.count != null)
-        {
-            slot.count.text = count.ToString();
-        }
-        SetAlpha(slot.icon, count > 0 ? 1f : emptyIconAlpha);
+    int index = (int)item;
+    if (index < 0 || index >= slots.Length)
+    {
+        Debug.LogError($"No HUD slot for {item} (index {index}). Slots size is {slots.Length}");
+        return;
     }
 
+    SlotUI slot = slots[index];
+
+    if (slot.count == null)
+        Debug.LogWarning($"Slot {index} ({item}) has no Count text assigned");
+    else
+    {
+        slot.count.text = count.ToString();
+        Debug.Log($"HUD: set {item} count text to {count} on object '{slot.count.gameObject.name}' (parent '{slot.count.transform.parent.name}')");
+    }
+
+    SetAlpha(slot.icon, count > 0 ? 1f : emptyIconAlpha);
+}
+
     public void SetEquipped(ItemType item){
-        for (int i = 0; i < slots.Length; i++)
+    for (int i = 0; i < slots.Length; i++)
+    {
+        if (slots[i].highlight != null)
             slots[i].highlight.enabled = i == (int)item;
     }
+}
 
     //Helper
     private void SetAlpha(Image image, float alpha)

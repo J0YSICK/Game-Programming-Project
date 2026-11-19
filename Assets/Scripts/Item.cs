@@ -2,47 +2,18 @@ using UnityEngine;
 
 public class Item : MonoBehaviour
 {
-    public string itemName;
+    [SerializeField] public ItemType itemType;
+    [SerializeField] public string displayName;
+    [SerializeField] private int amount = 1;
 
-    private bool playerInRange = false;
-    private Inventory playerInventory;
+    public string PromptText => $"[E] Pick up {displayName}";
 
-    private void Update()
+    // TODO: add a sound when picking up an item.
+    public void Pickup(Inventory inventory)
     {
-        // player item pickup
-        if (playerInRange && Input.GetKeyDown(KeyCode.E))
+        if (inventory.AddItem(itemType, amount))
         {
-            if (playerInventory != null)
-            {
-                bool successfullyAdded = playerInventory.AddItem(itemName);
-
-                if (successfullyAdded)
-                {
-                    Destroy(gameObject);
-                }
-            }
-        }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            playerInventory = other.GetComponent<Inventory>();
-            if (playerInventory != null)
-            {
-                playerInRange = true;
-                Debug.Log($"Press 'E' to pick up {itemName}");
-            }
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            playerInRange = false;
-            playerInventory = null;
+            Destroy(gameObject);
         }
     }
 }

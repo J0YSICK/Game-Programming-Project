@@ -3,25 +3,44 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    // A list to store the names of items collected
-    public List<string> items = new List<string>();
+    [SerializeField] private int capacity = 5;   // total items carried
 
-    // Maximum capacity of the inventory
-    public int capacity = 5;
+    private readonly Dictionary<ItemType, int> counts = new Dictionary<ItemType, int>();
+    private int total;
 
-    // adding item to the inventory if space is available
-    public bool AddItem(string itemName)
+    private void Start()
     {
-        if (items.Count < capacity)
+        // Initialise every HUD slot (dims the empty ones)
+        foreach (ItemType type in System.Enum.GetValues(typeof(ItemType)))
         {
-            items.Add(itemName);
-            Debug.Log($"Picked up: {itemName}. Inventory count: {items.Count}/{capacity}");
-            return true;
-        }
-        else
-        {
-            Debug.Log("Inventory is full!");
-            return false;
+            counts[type] = 0;
+            HUDManager.Instance?.SetItemCount(type, 0);
         }
     }
+
+    public bool AddItem(ItemType type, int amount = 1)
+{
+    if (total + amount > capacity)
+    {
+        HUDManager.Instance?.ShowTipOnce("inv_full", "Inventory is full!");
+        return false;
+    }
+
+    counts[type] += amount;
+    total += amount;
+    Debug.Log($"Added {type}. Count is now {counts[type]}, total {total}/{capacity}");
+    HUDManager.Instance?.SetItemCount(type, counts[type]);
+    return true;
+}
+
+    public bool UseItem(ItemType type)
+    {
+        if (!counts.TryGetValue(type, out int c) || c <= 0) return false;
+        counts[type]--;
+        total--;
+        HUDManager.Instance?.SetItemCount(type, counts[type]);
+        return true;
+    }
+
+    public int GetCount(ItemType type) => counts.TryGetValue(type, out int c) ? c : 0;
 }
