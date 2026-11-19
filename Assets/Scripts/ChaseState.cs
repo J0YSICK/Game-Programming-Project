@@ -14,7 +14,7 @@ public class ChaseState : IState
 
     public void Enter()
     {
-        
+        aiController.Agent.speed = 3f;
     }
 
     public void Execute()

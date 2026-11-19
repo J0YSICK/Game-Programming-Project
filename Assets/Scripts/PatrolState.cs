@@ -18,6 +18,7 @@ public class PatrolState : IState
     public void Enter()
     {
         aiController.Agent.isStopped = false;
+        aiController.Agent.speed = 1f;
         MoveToNextWaypoint();
     }
 
@@ -55,7 +56,7 @@ public class PatrolState : IState
             "doScream"
         );
 
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(2);
 
         aiController.Agent.isStopped = false;
         MoveToNextWaypoint();
