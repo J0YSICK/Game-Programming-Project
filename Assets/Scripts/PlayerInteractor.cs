@@ -3,12 +3,13 @@ using UnityEngine.InputSystem;
 
 public class PlayerInteractor : MonoBehaviour
 {
-    [SerializeField] private Camera playerCamera;      // leave empty to use Camera.main
+    [SerializeField] private Camera playerCamera;
     [SerializeField] private float interactRange = 3f;
     [SerializeField] private LayerMask interactMask = ~0;
 
     private Inventory inventory;
     private Item currentItem;
+    private Door currentDoor;
 
     private void Awake()
     {
@@ -18,45 +19,47 @@ public class PlayerInteractor : MonoBehaviour
 
     private void Update()
     {
-        LookForItem();
+        LookForTarget();
 
         if (Keyboard.current != null && Keyboard.current.eKey.wasPressedThisFrame)
         {
-            TryPickup();
+            TryInteract();
         }
     }
 
-    private void LookForItem()
+    private void LookForTarget()
     {
-        Item looked = null;
+        currentItem = null;
+        currentDoor = null;
 
         Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
         if (Physics.Raycast(ray, out RaycastHit hit, interactRange, interactMask,
                             QueryTriggerInteraction.Ignore))
         {
-            looked = hit.collider.GetComponentInParent<Item>();
+            currentItem = hit.collider.GetComponentInParent<Item>();
+            if (currentItem == null)
+                currentDoor = hit.collider.GetComponentInParent<Door>();
         }
 
-        if (looked == currentItem) return;   // nothing changed
-
-        currentItem = looked;
-        if (currentItem != null) HUDManager.Instance?.ShowPrompt(currentItem.PromptText);
-        else                     HUDManager.Instance?.HidePrompt();
+        // ShowPrompt/HidePrompt already skip redundant updates,
+        // so this also refreshes "Open"/"Close" text when the door state changes.
+        if (currentItem != null)      HUDManager.Instance?.ShowPrompt(currentItem.PromptText);
+        else if (currentDoor != null) HUDManager.Instance?.ShowPrompt(currentDoor.PromptText);
+        else                          HUDManager.Instance?.HidePrompt();
     }
 
-    private void TryPickup()
+    private void TryInteract()
     {
-        Debug.Log("E pressed, currentItem = " + currentItem);
-        if (currentItem == null) return;
-
-        if (inventory == null)
+        if (currentItem != null)
         {
-            Debug.LogError("Player has no Inventory component!");
-            return;
+            if (inventory == null) { Debug.LogError("Player has no Inventory component!"); return; }
+            currentItem.Pickup(inventory);
+            currentItem = null;
+            HUDManager.Instance?.HidePrompt();
         }
-
-        currentItem.Pickup(inventory);
-        currentItem = null;                  // item may be destroyed
-        HUDManager.Instance?.HidePrompt();
+        else if (currentDoor != null)
+        {
+            currentDoor.Interact(inventory);
+        }
     }
 }

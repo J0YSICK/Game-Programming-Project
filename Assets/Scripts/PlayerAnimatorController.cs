@@ -12,7 +12,7 @@ public class PlayerAnimatorController : MonoBehaviour
         controller = GetComponent<CharacterController>();
     }
 
-    void Update()
+    void LateUpdate()
     {
         Vector3 velocity = controller.velocity;
 
@@ -20,6 +20,6 @@ public class PlayerAnimatorController : MonoBehaviour
             velocity.x, 0f, velocity.z
         ).magnitude;
 
-        animator.SetFloat("CharacterSpeed", speed);
+        animator.SetFloat("MCSpeed", speed);
     }
 }
