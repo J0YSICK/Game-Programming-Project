@@ -5,14 +5,16 @@ public class PlayerAnimatorController : MonoBehaviour
 {
     private Animator animator;
     private CharacterController controller;
+    private FpsMovement movement;
 
     void Start()
     {
         animator = GetComponent<Animator>();
         controller = GetComponent<CharacterController>();
+        movement = GetComponent<FpsMovement>();
     }
 
-    void LateUpdate()
+    void Update()
     {
         Vector3 velocity = controller.velocity;
 
@@ -21,5 +23,6 @@ public class PlayerAnimatorController : MonoBehaviour
         ).magnitude;
 
         animator.SetFloat("MCSpeed", speed);
+        animator.SetBool("IsCrouching", movement.IsCrouching);
     }
 }

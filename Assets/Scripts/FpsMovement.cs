@@ -34,6 +34,7 @@ public class FpsMovement : MonoBehaviour
     private bool _isGrounded;
     private bool _isRunning;
     private bool _isCrouching;
+    public bool IsCrouching => _isCrouching;
     private float _verticalVelocity;
     private float _targetHeight;
 
@@ -111,6 +112,7 @@ public class FpsMovement : MonoBehaviour
     private void Jump (InputAction.CallbackContext context){
         if (_isGrounded) {
             _verticalVelocity = jumpForce;
+            GetComponent<Animator>().SetTrigger("doJump");
         }
     }
 
