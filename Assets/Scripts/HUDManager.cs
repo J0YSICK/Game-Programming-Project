@@ -153,14 +153,19 @@ public class HUDManager : MonoBehaviour
     }
 
     // Tips
-    public void ShowTipOnce(string id, string message){
-        if(!shownTips.Add(id)){
-            return;
-        }
-        if(tipRoutine != null){
+    public void ShowTip(string message)
+    {
+        if (tipRoutine != null)
+        {
             StopCoroutine(tipRoutine);
         }
         tipRoutine = StartCoroutine(ShowTipRoutine(message));
+    }
+
+    public void ShowTipOnce(string id, string message)
+    {
+        if (!shownTips.Add(id)) return;
+        ShowTip(message);
     }
 
     private IEnumerator ShowTipRoutine(string message){

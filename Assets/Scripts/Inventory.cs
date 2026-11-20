@@ -28,8 +28,9 @@ public class Inventory : MonoBehaviour
 
     counts[type] += amount;
     total += amount;
-    Debug.Log($"Added {type}. Count is now {counts[type]}, total {total}/{capacity}");
+    Debug.Log($"Added {type}. Count is now {counts[type]}, total {total}");
     HUDManager.Instance?.SetItemCount(type, counts[type]);
+    ObjectiveManager.Instance?.OnItemCollected(type, amount);
     return true;
 }
 
