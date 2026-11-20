@@ -157,6 +157,8 @@ MonoBehaviour:
   itemType: 1
   displayName: Apple
   amount: 1
+  pickupSound: {fileID: 8300000, guid: e0f4125b1710cfe42858e812bdf697c6, type: 3}
+  pickupVolume: 1
 --- !u!108 &1842272189929095205
 Light:
   m_ObjectHideFlags: 0
