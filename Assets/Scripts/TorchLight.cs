@@ -55,6 +55,7 @@ public class TorchLight : MonoBehaviour
         if (batteryBar != null){
             // Shrinks width proportionally from full width down to 0
             float newWidth = maxBarWidth * (battery / maxBattery);
+            // changes battery bars 'Width' value
             batteryBar.rectTransform.sizeDelta = new Vector2(newWidth, batteryBar.rectTransform.sizeDelta.y);
         }
 
