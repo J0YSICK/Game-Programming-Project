@@ -23,6 +23,7 @@ public class HUDManager : MonoBehaviour
         public Image icon;
         public Image highlight;
         public TMP_Text count;
+        public bool alwaysOwned;
     }
 
     [Header("Health")]
@@ -60,6 +61,10 @@ public class HUDManager : MonoBehaviour
     [Header("Inventory")]
     [SerializeField] private SlotUI[] slots;
     [SerializeField, Range(0f, 1f)] private float emptyIconAlpha = 0.35f;
+    [SerializeField] private Color highlightIdle = new Color32(0x80, 0x80, 0x80, 0xFF);
+    [SerializeField] private Color highlightEquipped = new Color32(0xE0, 0x8C, 0x21, 0xFF);
+
+    
 
     private HashSet<string> shownTips = new HashSet<string>();
 
@@ -219,13 +224,21 @@ public class HUDManager : MonoBehaviour
     SetAlpha(slot.icon, count > 0 ? 1f : emptyIconAlpha);
 }
 
-    public void SetEquipped(ItemType item){
-    for (int i = 0; i < slots.Length; i++)
+    public void SetEquipped(ItemType item)
     {
-        if (slots[i].highlight != null)
-            slots[i].highlight.enabled = i == (int)item;
+        for (int i = 0; i < slots.Length; i++)
+        {
+            bool isEquipped = i == (int)item;
+
+            if (slots[i].highlight != null)
+            {
+                slots[i].highlight.enabled = true;  
+                slots[i].highlight.color = isEquipped ? highlightEquipped : highlightIdle;
+            }
+
+        }
     }
-}
+
 
     //Helper
     private void SetAlpha(Image image, float alpha)
