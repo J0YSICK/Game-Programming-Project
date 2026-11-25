@@ -43,7 +43,7 @@ Light:
   serializedVersion: 13
   m_Type: 2
   m_Color: {r: 1, g: 0.88949335, b: 0.28773582, a: 1}
-  m_Intensity: 0.2
+  m_Intensity: 1
   m_Range: 1
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -171,8 +171,33 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: e41333e36d6eebd4db710d9da3bd5c46, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3020592500529930120}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e41333e36d6eebd4db710d9da3bd5c46, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3542425713217641727}
   m_SourcePrefab: {fileID: 100100000, guid: e41333e36d6eebd4db710d9da3bd5c46, type: 3}
+--- !u!1 &7292419400434045223 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: e41333e36d6eebd4db710d9da3bd5c46, type: 3}
+  m_PrefabInstance: {fileID: 7634315085254814838}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3542425713217641727
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7292419400434045223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 329900dc8dcca7c47b180830921b6f10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Item
+  itemType: 0
+  displayName: Battery
+  amount: 1
+  pickupSound: {fileID: 0}
+  pickupVolume: 1
 --- !u!4 &7960165540297280413 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: e41333e36d6eebd4db710d9da3bd5c46, type: 3}
