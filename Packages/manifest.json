@@ -2,7 +2,7 @@
   "dependencies": {
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.ai.navigation": "2.0.16",
-    "com.unity.cinemachine": "6.6.0",
+    "com.unity.cinemachine": "3.1.8",
     "com.unity.inputsystem": "1.20.1",
     "com.unity.multiplayer.center": "2.0.1",
     "com.unity.ugui": "2.6.0",
